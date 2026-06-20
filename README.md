@@ -49,6 +49,3 @@ AuraBuild es una plataforma avanzada de visualización arquitectónica y presupu
 2.  **Muebles 3D:** Pasar de símbolos 2D a modelos 3D de alta fidelidad dentro de los ambientes.
 3.  **Realidad Aumentada (AR):** Visualizar la casa diseñada sobre el terreno real usando la cámara del móvil.
 4.  **Simulación Lumínica:** Estudio de sombras según la posición real del sol en la ubicación elegida.
-
----
-*Auditoría realizada por Antigravity AI - 2024*
