@@ -2132,7 +2132,7 @@ export default function CasaBuilder({ config, wireframe }: Props) {
       scene.background = new THREE.Color("#4a7a4a"); // Green grass exterior
     } else if (isSketch) {
       scene.background = new THREE.Color("#ffffff");
-    } else if (config.environment !== 'ninguno') {
+    } else if (config.environment) {
       const textureLoader = new THREE.TextureLoader();
       const envTexture = textureLoader.load(
         config.environment === 'campo_sierras' ? '/env_sierras.png' :
