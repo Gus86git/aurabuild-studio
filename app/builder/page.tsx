@@ -545,15 +545,15 @@ export default function BuilderPage() {
   const totalCost = (roomWeightedM2 * baseCostPerM2 * envMultiplier) + poolCost;
 
   return (
-    <div className={`${isMobile ? 'flex-col' : 'flex'} h-screen w-screen bg-[#060606] overflow-hidden`} suppressHydrationWarning>
-      <aside className={`${isMobile ? 'w-full h-1/2 p-4' : 'w-96 p-6'} bg-neutral-950 border-r border-neutral-800 flex flex-col gap-4 shadow-2xl overflow-y-auto no-scrollbar`}>
+    <div className="flex flex-col md:flex-row h-screen w-screen bg-[#060606] overflow-hidden" suppressHydrationWarning>
+      <aside className="w-full h-[45vh] md:w-96 md:h-full p-4 md:p-6 bg-neutral-950 border-b md:border-b-0 md:border-r border-neutral-800 flex flex-col gap-4 shadow-2xl overflow-y-auto no-scrollbar">
         <div className="flex items-center gap-4">
            <Link href="/" passHref>
               <Button variant="ghost" size="icon" className="h-9 w-9 flex-shrink-0 text-stone-400 hover:text-cyan-400 hover:bg-neutral-800 border border-neutral-800">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
               </Button>
            </Link>
-           <h2 className={`font-bold ${isMobile ? 'text-xl' : 'text-2xl'} bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500 uppercase tracking-widest`}>Diseñador 3D</h2>
+           <h2 className="font-bold text-xl md:text-2xl bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500 uppercase tracking-widest">Diseñador 3D</h2>
         </div>
         
         {!isMobile && (
@@ -921,27 +921,39 @@ export default function BuilderPage() {
         {/* Espacio final en la barra lateral para evitar recorte con botones inferiores */}
       </aside>
 
-      <div className="relative flex-1 min-w-0 bg-[#0a0a0a] flex items-center justify-center" style={{ height: isMobile ? '50vh' : '100vh' }}>
-        <div className="absolute top-6 right-6 z-10 bg-neutral-900 border border-neutral-800 p-6 rounded-xl shadow-2xl min-w-[320px]">
-          <h3 className="text-stone-400 text-sm font-medium uppercase tracking-wider mb-1">Presupuesto Real</h3>
-          <div className="text-4xl font-bold text-cyan-500 mb-0">${totalCost.toLocaleString('es-AR')} <span className="text-base font-normal text-cyan-700">ARS</span></div>
-          <div className="text-lg font-semibold text-emerald-500 mb-4">U$D {Math.round(totalCost / 1400).toLocaleString('en-US')} <span className="text-xs font-normal text-stone-500">aprox (1:1400)</span></div>
-          <div className="text-xs text-stone-500 flex flex-col gap-1">
-            <div className="flex justify-between w-full gap-4">
-              <span>Sup. Total / Terreno:</span>
-              <span className="text-white text-right"><b className="text-white">{totalM2} m²</b> ({config.environment?.split('_')[0]})</span>
-            </div>
-            <div className="flex justify-between w-full">
-              <span>Calidad:</span>
-              <span className="capitalize text-stone-300 text-right">{calidad}</span>
-            </div>
-            {config.pool?.active && (
-              <div className="flex justify-between w-full text-cyan-400">
-                <span>Adicionales:</span>
-                <span className="text-right">+ Pileta ({config.pool.width}x{config.pool.length}m)</span>
+      <div className="relative flex-1 min-w-0 bg-[#0a0a0a] flex items-center justify-center h-[55vh] md:h-full">
+        <div className="absolute top-3 left-3 right-3 md:top-6 md:right-6 md:left-auto z-10 bg-neutral-900/95 backdrop-blur border border-neutral-800 p-3 md:p-6 rounded-xl shadow-2xl min-w-0 md:min-w-[320px]">
+          <div className="flex md:block justify-between items-center md:items-stretch">
+            <div>
+              <h3 className="text-stone-400 text-[10px] md:text-sm font-medium uppercase tracking-wider mb-0.5 md:mb-1">Presupuesto Real</h3>
+              <div className="text-xl md:text-4xl font-bold text-cyan-500 mb-0">
+                ${totalCost.toLocaleString('es-AR')} <span className="text-xs md:text-base font-normal text-cyan-700">ARS</span>
               </div>
-            )}
+            </div>
+            <div className="text-right md:text-left mt-0 md:mt-2">
+              <div className="text-sm md:text-lg font-semibold text-emerald-500">
+                U$D {Math.round(totalCost / 1400).toLocaleString('en-US')} <span className="text-[9px] md:text-xs font-normal text-stone-500">aprox</span>
+              </div>
+            </div>
           </div>
+          {!isMobile && (
+            <div className="text-xs text-stone-500 flex flex-col gap-1 mt-4 pt-3 border-t border-neutral-800">
+              <div className="flex justify-between w-full gap-4">
+                <span>Sup. Total / Terreno:</span>
+                <span className="text-white text-right"><b className="text-white">{totalM2} m²</b> ({config.environment?.split('_')[0]})</span>
+              </div>
+              <div className="flex justify-between w-full">
+                <span>Calidad:</span>
+                <span className="capitalize text-stone-300 text-right">{calidad}</span>
+              </div>
+              {config.pool?.active && (
+                <div className="flex justify-between w-full text-cyan-400">
+                  <span>Adicionales:</span>
+                  <span className="text-right">+ Pileta ({config.pool.width}x{config.pool.length}m)</span>
+                </div>
+              )}
+            </div>
+          )}
         </div>
         
         <button 
@@ -952,33 +964,34 @@ export default function BuilderPage() {
              sessionStorage.setItem("aurabuild_totalCost", totalCost.toString());
              window.location.href = '/builder/dashboard';
           }}
-          className="absolute bottom-8 right-8 z-20 bg-cyan-600 hover:bg-cyan-400 text-white px-6 py-4 rounded-xl font-bold shadow-[0_0_25px_rgba(58,190,255,0.4)] transition-all flex items-center gap-3 border border-cyan-400/50"
+          className="absolute bottom-3 right-3 z-20 bg-cyan-600 hover:bg-cyan-400 text-white p-2.5 md:px-6 md:py-4 rounded-lg md:rounded-xl font-bold shadow-[0_0_25px_rgba(58,190,255,0.4)] transition-all flex items-center gap-2 md:gap-3 border border-cyan-400/50 text-xs md:text-sm"
         >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
-          Generar Analytics Board
+          <svg className="w-4 h-4 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+          <span className="hidden md:inline">Generar Analytics Board</span>
+          <span className="inline md:hidden">Analytics</span>
         </button>
 
         {/* Botones de acción — esquina inferior izquierda */}
-        <div className="absolute bottom-8 left-8 z-20 flex flex-row gap-2">
+        <div className="absolute bottom-3 left-3 z-20 flex flex-row gap-1.5 md:bottom-8 md:left-8 md:gap-2">
           <button
             onClick={handleCapture}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-neutral-900/90 border border-neutral-700 text-stone-300 hover:text-cyan-400 hover:border-cyan-500 text-xs font-bold uppercase tracking-wider backdrop-blur-sm transition-all shadow-lg"
+            className="flex items-center gap-2 p-2.5 md:px-4 md:py-2.5 rounded-lg md:rounded-xl bg-neutral-900/90 border border-neutral-700 text-stone-300 hover:text-cyan-400 hover:border-cyan-500 text-xs font-bold uppercase tracking-wider backdrop-blur-sm transition-all shadow-lg"
             title="Capturar imagen del render actual"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><circle cx="12" cy="13" r="3" strokeWidth="2"/></svg>
-            Capturar Render
+            <span className="hidden md:inline">Capturar Render</span>
           </button>
           <button
             onClick={handleExportGLB}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-neutral-900/90 border border-neutral-700 text-stone-300 hover:text-emerald-400 hover:border-emerald-500 text-xs font-bold uppercase tracking-wider backdrop-blur-sm transition-all shadow-lg"
+            className="flex items-center gap-2 p-2.5 md:px-4 md:py-2.5 rounded-lg md:rounded-xl bg-neutral-900/90 border border-neutral-700 text-stone-300 hover:text-emerald-400 hover:border-emerald-500 text-xs font-bold uppercase tracking-wider backdrop-blur-sm transition-all shadow-lg"
             title="Exportar modelo 3D en formato GLB"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-            Exportar GLB
+            <span className="hidden md:inline">Exportar GLB</span>
           </button>
           <button
             onClick={() => setWireframeMode(w => !w)}
-            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border text-xs font-bold uppercase tracking-wider backdrop-blur-sm transition-all shadow-lg ${
+            className={`flex items-center gap-2 p-2.5 md:px-4 md:py-2.5 rounded-lg md:rounded-xl border text-xs font-bold uppercase tracking-wider backdrop-blur-sm transition-all shadow-lg ${
               wireframeMode
                 ? 'bg-cyan-900/80 border-cyan-500 text-cyan-400 shadow-cyan-500/20'
                 : 'bg-neutral-900/90 border-neutral-700 text-stone-300 hover:text-cyan-400 hover:border-cyan-500'
@@ -986,7 +999,7 @@ export default function BuilderPage() {
             title="Activar/desactivar malla técnica (wireframe)"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"/></svg>
-            {wireframeMode ? 'Estructura Activa' : 'Estructura Alámbrica'}
+            <span className="hidden md:inline">{wireframeMode ? 'Estructura Activa' : 'Estructura Alámbrica'}</span>
           </button>
         </div>
 
@@ -994,4 +1007,4 @@ export default function BuilderPage() {
       </div>
     </div>
   );
-} 
+}
