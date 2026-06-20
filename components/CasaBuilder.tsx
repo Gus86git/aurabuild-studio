@@ -2340,7 +2340,7 @@ export default function CasaBuilder({ config, wireframe }: Props) {
       }
       return new THREE.MeshStandardMaterial({ 
         map: map, 
-        color: map ? undefined : defaultColor, 
+        color: map ? '#ffffff' : defaultColor, 
         roughness: 0.8 
       });
     };

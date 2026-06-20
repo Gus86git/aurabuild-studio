@@ -556,6 +556,20 @@ export default function BuilderPage() {
            <h2 className="font-bold text-xl md:text-2xl bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500 uppercase tracking-widest">Diseñador 3D</h2>
         </div>
         
+        {/* Presupuesto en Móviles */}
+        <div className="block md:hidden bg-neutral-900 border border-neutral-800 p-3 rounded-xl shadow-md">
+          <div className="flex justify-between items-center">
+            <div>
+              <h3 className="text-stone-500 text-[10px] font-semibold uppercase tracking-wider">Presupuesto Real</h3>
+              <div className="text-base font-bold text-cyan-500">${totalCost.toLocaleString('es-AR')} <span className="text-[9px] font-normal text-cyan-700">ARS</span></div>
+            </div>
+            <div className="text-right">
+              <div className="text-sm font-semibold text-emerald-500">U$D {Math.round(totalCost / 1400).toLocaleString('en-US')}</div>
+              <div className="text-[9px] text-stone-500">{totalM2} m² | {calidad}</div>
+            </div>
+          </div>
+        </div>
+
         {!isMobile && (
           <div className="bg-cyan-950/30 border border-cyan-900/50 rounded-xl p-4 text-sm mb-2">
               <p className="text-xs font-semibold text-cyan-500 uppercase tracking-wider mb-2">Guía Rápida</p>
@@ -915,45 +929,30 @@ export default function BuilderPage() {
             )}
           </div>
         </div>
-
-        {/* Espacio final en la barra lateral */}
-
-        {/* Espacio final en la barra lateral para evitar recorte con botones inferiores */}
       </aside>
 
       <div className="relative flex-1 min-w-0 bg-[#0a0a0a] flex items-center justify-center h-[55vh] md:h-full">
-        <div className="absolute top-3 left-3 right-3 md:top-6 md:right-6 md:left-auto z-10 bg-neutral-900/95 backdrop-blur border border-neutral-800 p-3 md:p-6 rounded-xl shadow-2xl min-w-0 md:min-w-[320px]">
-          <div className="flex md:block justify-between items-center md:items-stretch">
-            <div>
-              <h3 className="text-stone-400 text-[10px] md:text-sm font-medium uppercase tracking-wider mb-0.5 md:mb-1">Presupuesto Real</h3>
-              <div className="text-xl md:text-4xl font-bold text-cyan-500 mb-0">
-                ${totalCost.toLocaleString('es-AR')} <span className="text-xs md:text-base font-normal text-cyan-700">ARS</span>
-              </div>
+        {/* Presupuesto en Desktop */}
+        <div className="hidden md:block absolute top-6 right-6 z-10 bg-neutral-900 border border-neutral-800 p-6 rounded-xl shadow-2xl min-w-[320px]">
+          <h3 className="text-stone-400 text-sm font-medium uppercase tracking-wider mb-1">Presupuesto Real</h3>
+          <div className="text-4xl font-bold text-cyan-500 mb-0">${totalCost.toLocaleString('es-AR')} <span className="text-base font-normal text-cyan-700">ARS</span></div>
+          <div className="text-lg font-semibold text-emerald-500 mb-4">U$D {Math.round(totalCost / 1400).toLocaleString('en-US')} <span className="text-xs font-normal text-stone-500">aprox (1:1400)</span></div>
+          <div className="text-xs text-stone-500 flex flex-col gap-1">
+            <div className="flex justify-between w-full gap-4">
+              <span>Sup. Total / Terreno:</span>
+              <span className="text-white text-right"><b className="text-white">{totalM2} m²</b> ({config.environment?.split('_')[0]})</span>
             </div>
-            <div className="text-right md:text-left mt-0 md:mt-2">
-              <div className="text-sm md:text-lg font-semibold text-emerald-500">
-                U$D {Math.round(totalCost / 1400).toLocaleString('en-US')} <span className="text-[9px] md:text-xs font-normal text-stone-500">aprox</span>
-              </div>
+            <div className="flex justify-between w-full">
+              <span>Calidad:</span>
+              <span className="capitalize text-stone-300 text-right">{calidad}</span>
             </div>
+            {config.pool?.active && (
+              <div className="flex justify-between w-full text-cyan-400">
+                <span>Adicionales:</span>
+                <span className="text-right">+ Pileta ({config.pool.width}x{config.pool.length}m)</span>
+              </div>
+            )}
           </div>
-          {!isMobile && (
-            <div className="text-xs text-stone-500 flex flex-col gap-1 mt-4 pt-3 border-t border-neutral-800">
-              <div className="flex justify-between w-full gap-4">
-                <span>Sup. Total / Terreno:</span>
-                <span className="text-white text-right"><b className="text-white">{totalM2} m²</b> ({config.environment?.split('_')[0]})</span>
-              </div>
-              <div className="flex justify-between w-full">
-                <span>Calidad:</span>
-                <span className="capitalize text-stone-300 text-right">{calidad}</span>
-              </div>
-              {config.pool?.active && (
-                <div className="flex justify-between w-full text-cyan-400">
-                  <span>Adicionales:</span>
-                  <span className="text-right">+ Pileta ({config.pool.width}x{config.pool.length}m)</span>
-                </div>
-              )}
-            </div>
-          )}
         </div>
         
         <button 
