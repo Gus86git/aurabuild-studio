@@ -3005,8 +3005,21 @@ export default function CasaBuilder({ config, wireframe }: Props) {
       const newWidth = mount.clientWidth;
       const newHeight = mount.clientHeight;
 
-      camera.aspect = newWidth / newHeight;
-      camera.updateProjectionMatrix();
+      if (camera instanceof THREE.PerspectiveCamera) {
+        camera.aspect = newWidth / newHeight;
+        camera.updateProjectionMatrix();
+      } else if (camera instanceof THREE.OrthographicCamera) {
+        // Para cámara ortográfica recalculamos el frustum
+        const fAspect = newWidth / newHeight;
+        const spanX = (extMaxX - extMinX);
+        const spanZ = (extMaxZ - extMinZ);
+        const newFrustum = Math.max(spanX / fAspect, spanZ) * 1.25;
+        camera.left   = newFrustum * fAspect / -2;
+        camera.right  = newFrustum * fAspect / 2;
+        camera.top    = newFrustum / 2;
+        camera.bottom = newFrustum / -2;
+        camera.updateProjectionMatrix();
+      }
 
       renderer.setSize(newWidth, newHeight);
       renderer.render(scene, camera);

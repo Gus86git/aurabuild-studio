@@ -546,28 +546,14 @@ export default function BuilderPage() {
 
   return (
     <div className="flex flex-col md:flex-row h-screen w-screen bg-[#060606] overflow-hidden" suppressHydrationWarning>
-      <aside className="w-full h-[45vh] md:w-96 md:h-full p-4 md:p-6 bg-neutral-950 border-b md:border-b-0 md:border-r border-neutral-800 flex flex-col gap-4 shadow-2xl overflow-y-auto no-scrollbar">
-        <div className="flex items-center gap-4">
+      <aside className="w-full md:w-96 md:h-full p-3 md:p-6 bg-neutral-950 border-b md:border-b-0 md:border-r border-neutral-800 flex flex-col gap-3 md:gap-4 shadow-2xl overflow-y-auto no-scrollbar" style={{ maxHeight: isMobile ? '42vh' : '100vh' }}>
+        <div className="flex items-center gap-3">
            <Link href="/" passHref>
-              <Button variant="ghost" size="icon" className="h-9 w-9 flex-shrink-0 text-stone-400 hover:text-cyan-400 hover:bg-neutral-800 border border-neutral-800">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+              <Button variant="ghost" size="icon" className="h-8 w-8 flex-shrink-0 text-stone-400 hover:text-cyan-400 hover:bg-neutral-800 border border-neutral-800">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
               </Button>
            </Link>
-           <h2 className="font-bold text-xl md:text-2xl bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500 uppercase tracking-widest">Diseñador 3D</h2>
-        </div>
-        
-        {/* Presupuesto en Móviles */}
-        <div className="block md:hidden bg-neutral-900 border border-neutral-800 p-3 rounded-xl shadow-md">
-          <div className="flex justify-between items-center">
-            <div>
-              <h3 className="text-stone-500 text-[10px] font-semibold uppercase tracking-wider">Presupuesto Real</h3>
-              <div className="text-base font-bold text-cyan-500">${totalCost.toLocaleString('es-AR')} <span className="text-[9px] font-normal text-cyan-700">ARS</span></div>
-            </div>
-            <div className="text-right">
-              <div className="text-sm font-semibold text-emerald-500">U$D {Math.round(totalCost / 1400).toLocaleString('en-US')}</div>
-              <div className="text-[9px] text-stone-500">{totalM2} m² | {calidad}</div>
-            </div>
-          </div>
+           <h2 className="font-bold text-lg md:text-2xl bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500 uppercase tracking-widest">Diseñador 3D</h2>
         </div>
 
         {!isMobile && (
@@ -931,7 +917,34 @@ export default function BuilderPage() {
         </div>
       </aside>
 
-      <div className="relative flex-1 min-w-0 bg-[#0a0a0a] flex items-center justify-center h-[55vh] md:h-full">
+      {/* Barra de presupuesto fija SÓLO en móvil — encima del canvas, sin tapar el 3D */}
+      {isMobile && (
+        <div className="w-full bg-neutral-950/95 border-b border-neutral-800 px-4 py-2 flex items-center justify-between z-30 flex-shrink-0" style={{ backdropFilter: 'blur(8px)' }}>
+          <div>
+            <div className="text-[9px] text-stone-500 uppercase tracking-wider font-semibold">Presupuesto</div>
+            <div className="text-sm font-bold text-cyan-400">${totalCost.toLocaleString('es-AR')} <span className="text-[9px] text-cyan-700">ARS</span></div>
+          </div>
+          <div className="text-right">
+            <div className="text-xs font-semibold text-emerald-400">U$D {Math.round(totalCost / 1400).toLocaleString('en-US')}</div>
+            <div className="text-[9px] text-stone-500">{totalM2} m² · {calidad}</div>
+          </div>
+          <button
+            onClick={() => {
+              sessionStorage.setItem("aurabuild_config", JSON.stringify(config));
+              sessionStorage.setItem("aurabuild_totalM2", totalM2.toString());
+              sessionStorage.setItem("aurabuild_calidad", calidad);
+              sessionStorage.setItem("aurabuild_totalCost", totalCost.toString());
+              window.location.href = '/builder/dashboard';
+            }}
+            className="bg-cyan-600 hover:bg-cyan-500 text-white px-3 py-1.5 rounded-lg font-bold text-[10px] uppercase tracking-wider border border-cyan-400/50 flex items-center gap-1"
+          >
+            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+            Analytics
+          </button>
+        </div>
+      )}
+
+      <div className="relative flex-1 min-w-0 bg-[#0a0a0a] flex items-center justify-center" style={{ minHeight: isMobile ? '0' : '100vh' }}>
         {/* Presupuesto en Desktop */}
         <div className="hidden md:block absolute top-6 right-6 z-10 bg-neutral-900 border border-neutral-800 p-6 rounded-xl shadow-2xl min-w-[320px]">
           <h3 className="text-stone-400 text-sm font-medium uppercase tracking-wider mb-1">Presupuesto Real</h3>
@@ -955,20 +968,22 @@ export default function BuilderPage() {
           </div>
         </div>
         
-        <button 
-          onClick={() => {
-             sessionStorage.setItem("aurabuild_config", JSON.stringify(config));
-             sessionStorage.setItem("aurabuild_totalM2", totalM2.toString());
-             sessionStorage.setItem("aurabuild_calidad", calidad);
-             sessionStorage.setItem("aurabuild_totalCost", totalCost.toString());
-             window.location.href = '/builder/dashboard';
-          }}
-          className="absolute bottom-3 right-3 z-20 bg-cyan-600 hover:bg-cyan-400 text-white p-2.5 md:px-6 md:py-4 rounded-lg md:rounded-xl font-bold shadow-[0_0_25px_rgba(58,190,255,0.4)] transition-all flex items-center gap-2 md:gap-3 border border-cyan-400/50 text-xs md:text-sm"
-        >
-          <svg className="w-4 h-4 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
-          <span className="hidden md:inline">Generar Analytics Board</span>
-          <span className="inline md:hidden">Analytics</span>
-        </button>
+        {/* Botón Analytics — solo en desktop, en móvil está en la barra superior */}
+        {!isMobile && (
+          <button 
+            onClick={() => {
+               sessionStorage.setItem("aurabuild_config", JSON.stringify(config));
+               sessionStorage.setItem("aurabuild_totalM2", totalM2.toString());
+               sessionStorage.setItem("aurabuild_calidad", calidad);
+               sessionStorage.setItem("aurabuild_totalCost", totalCost.toString());
+               window.location.href = '/builder/dashboard';
+            }}
+            className="absolute bottom-8 right-8 z-20 bg-cyan-600 hover:bg-cyan-400 text-white px-6 py-4 rounded-xl font-bold shadow-[0_0_25px_rgba(58,190,255,0.4)] transition-all flex items-center gap-3 border border-cyan-400/50 text-sm"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+            Generar Analytics Board
+          </button>
+        )}
 
         {/* Botones de acción — esquina inferior izquierda */}
         <div className="absolute bottom-3 left-3 z-20 flex flex-row gap-1.5 md:bottom-8 md:left-8 md:gap-2">
