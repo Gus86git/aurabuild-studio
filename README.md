@@ -1,4 +1,6 @@
-# 🏠 AuraBuild 3D Architect - Auditoría de Proyecto
+# 🏠 AuraBuild 3D Architect 
+
+https://aurabuild-studio.vercel.app/
 
 ## 📋 Resumen del Sistema
 AuraBuild es una plataforma avanzada de visualización arquitectónica y presupuestación en tiempo real. Utiliza un motor de renderizado 3D basado en **Three.js** integrado con **Next.js 14**, permitiendo a los usuarios diseñar viviendas modulares, visualizar planos técnicos y obtener estimaciones de costos precisas basadas en el mercado actual (ARS/USD).
